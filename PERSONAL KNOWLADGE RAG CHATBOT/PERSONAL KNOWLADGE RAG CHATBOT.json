@@ -1,0 +1,501 @@
+{
+  "name": "PERSONAL KNOWLADGE RAG CHATBOT",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.embeddingsGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1088,
+        320
+      ],
+      "id": "57093d48-ff91-4322-a101-891a82305099",
+      "name": "Embeddings Google Gemini",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
+      "typeVersion": 1,
+      "position": [
+        1232,
+        368
+      ],
+      "id": "804c83bd-3e4c-41f1-b0cc-6238f860b8b3",
+      "name": "Recursive Character Text Splitter"
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "pineconeIndex": {
+          "__rl": true,
+          "value": "bismillah",
+          "mode": "list",
+          "cachedResultName": "bismillah"
+        },
+        "options": {
+          "pineconeNamespace": "Klinik_Dataset"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
+      "typeVersion": 1.3,
+      "position": [
+        1200,
+        16
+      ],
+      "id": "4e598b08-0dd5-45ac-8ccf-872a5e900684",
+      "name": "Pinecone Vector Store",
+      "credentials": {
+        "pineconeApi": {
+          "id": "",
+          "name": "PineconeApi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        688,
+        0
+      ],
+      "id": "e706a9b0-763e-411d-be9e-73cc804154cd",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        416,
+        0
+      ],
+      "id": "bf611e8c-7c70-4916-9e6c-0bf90b4fafc9",
+      "name": "Download file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "fileFolder",
+        "returnAll": true,
+        "filter": {
+          "folderId": {
+            "__rl": true,
+            "value": "1ov0YzMQRJ8CYNUDflzPRkFSHo4mTM1It",
+            "mode": "list",
+            "cachedResultName": "TesRAG",
+            "cachedResultUrl": "https://drive.google.com/drive/folders/1ov0YzMQRJ8CYNUDflzPRkFSHo4mTM1It"
+          }
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        208,
+        0
+      ],
+      "id": "2fa52d4d-2332-41c8-802c-a77842a60c69",
+      "name": "Search files and folders",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "9c6f0c42-e0fe-48e9-931d-db519119bdcd",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "dataType": "binary",
+        "textSplittingMode": "custom",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1.1,
+      "position": [
+        1376,
+        224
+      ],
+      "id": "cd4567df-1849-4e38-93af-e7ed980db386",
+      "name": "Default Data Loader"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "Anda adalah Asisten Klinik yang ramah dan profesional. Tugas utama Anda adalah menyediakan informasi akurat tentang klinik dan daftar karyawan. Gunakan alat pencarian Pinecone Vector Store setiap kali user menanyakan hal-hal berikut:\n\nInformasi klinik: Jam operasional, jenis layanan, atau lokasi.\n\nInformasi karyawan: Nama, jabatan, atau departemen.\n\nAturan Penting:\n\nPrioritaskan sumber informasi: Selalu gunakan informasi dari Pinecone Vector Store sebagai sumber utama Anda.\n\nJangan mengarang jawaban: Jika informasi yang diminta tidak ditemukan di Pinecone Vector Store, berikan jawaban yang jujur seperti: 'Maaf, data yang Anda cari tidak tersedia dalam database kami.' atau 'Saya tidak memiliki informasi tersebut saat ini.'\n\nTanggapan ramah: Pertahankan nada yang sopan dan membantu dalam setiap interaksi."
+        }
+      },
+      "id": "000a3e03-db2a-4eaa-9931-352ef8df260b",
+      "name": "AI Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [
+        144,
+        576
+      ],
+      "typeVersion": 1.7
+    },
+    {
+      "parameters": {
+        "name": "Klinik_Dataset",
+        "description": "Retrieve information from any company documents"
+      },
+      "id": "cb3d761a-112b-4780-94cc-090e722a48fe",
+      "name": "Vector Store Tool",
+      "type": "@n8n/n8n-nodes-langchain.toolVectorStore",
+      "position": [
+        544,
+        800
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "pineconeIndex": {
+          "__rl": true,
+          "value": "bismillah",
+          "mode": "list",
+          "cachedResultName": "bismillah"
+        },
+        "options": {
+          "pineconeNamespace": "Klinik_Dataset"
+        }
+      },
+      "id": "e50cdd5b-9071-47d9-a1f9-ac6bb6e7933a",
+      "name": "Pinecone Vector Store (Retrieval)",
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
+      "position": [
+        448,
+        976
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "pineconeApi": {
+          "id": "",
+          "name": "PineconeApi account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "id": "f42e2943-a703-449d-a57a-1ebd5d60634a",
+      "name": "Embeddings Google Gemini (retrieval)",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsGoogleGemini",
+      "position": [
+        432,
+        1136
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "googlePalmApi": {
+          "id": "",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Chat with company documents"
+      },
+      "id": "b6331760-79bf-4a3b-aa47-511b0973dca3",
+      "name": "Sticky Note2",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -304,
+        368
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {},
+      "id": "c204dc57-c34b-4ee3-bde9-4d237b71e525",
+      "name": "Window Buffer Memory",
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "position": [
+        224,
+        880
+      ],
+      "typeVersion": 1.3
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash-exp",
+        "options": {}
+      },
+      "id": "7339eeee-fa01-4220-916f-9a9b4a4b6e1a",
+      "name": "Google Gemini Chat Model (retrieval)",
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "position": [
+        800,
+        976
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "googlePalmApi": {
+          "id": "",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash-exp",
+        "options": {}
+      },
+      "id": "f73b0369-bfd3-4303-a0dc-b3c64665cce1",
+      "name": "Google Gemini Chat Model1",
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "position": [
+        48,
+        880
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "googlePalmApi": {
+          "id": "",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -224,
+        560
+      ],
+      "id": "4f98cee2-b780-4564-89df-ed27f9d917c0",
+      "name": "When chat message received",
+      "webhookId": "40be3aaf-6221-41b4-a8b4-27c7f34fa079"
+    },
+    {
+      "parameters": {
+        "content": "## Upload document knowladge"
+      },
+      "id": "81868cab-550b-4224-8742-8dd6b2d694ff",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -32,
+        -208
+      ],
+      "typeVersion": 1
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Embeddings Google Gemini": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Pinecone Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pinecone Vector Store": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Pinecone Vector Store",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download file": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search files and folders": {
+      "main": [
+        [
+          {
+            "node": "Download file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Search files and folders",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Recursive Character Text Splitter": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Pinecone Vector Store",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Vector Store Tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Window Buffer Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pinecone Vector Store (Retrieval)": {
+      "ai_vectorStore": [
+        [
+          {
+            "node": "Vector Store Tool",
+            "type": "ai_vectorStore",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Google Gemini (retrieval)": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Pinecone Vector Store (Retrieval)",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model (retrieval)": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Vector Store Tool",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "b2cf1a34-f3ea-4c21-823e-2270c72baf7a",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "99a6dd49b5f7dc92d47eb206ae55c2577c239ad33d443e437ffcda2d856ebf14"
+  },
+  "id": "ZWmK6OtqlLTeRR0g",
+  "tags": []
+}
