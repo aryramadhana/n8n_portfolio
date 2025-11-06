@@ -19,8 +19,6 @@
       "webhookId": "999ec93d-47b6-4c74-bd7c-7e299220513d",
       "credentials": {
         "telegramApi": {
-          "id": "bq8RKSNqy4nGIPD6",
-          "name": "Telegram account"
         }
       }
     },
@@ -125,8 +123,6 @@
       "webhookId": "0958d8d2-d655-48f3-9e65-41f51d242da9",
       "credentials": {
         "telegramApi": {
-          "id": "bq8RKSNqy4nGIPD6",
-          "name": "Telegram account"
         }
       }
     },
@@ -160,7 +156,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=AIzaSyBVzxXs3It16aWJFBVsGUpAeMkYTQOQLkY",
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
@@ -236,8 +232,6 @@
       "webhookId": "bb64b851-16dd-4203-ae68-9a50bafaf155",
       "credentials": {
         "telegramApi": {
-          "id": "bq8RKSNqy4nGIPD6",
-          "name": "Telegram account"
         }
       }
     },
@@ -340,8 +334,6 @@
       "name": "Append row in sheet",
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "IRhkbWMSiZBwodcP",
-          "name": "Google Sheets account"
         }
       }
     },
@@ -364,8 +356,6 @@
       "webhookId": "5c793460-513b-4de7-bd95-8fba089e0b1b",
       "credentials": {
         "telegramApi": {
-          "id": "bq8RKSNqy4nGIPD6",
-          "name": "Telegram account"
         }
       }
     },
@@ -405,8 +395,6 @@
       "webhookId": "be36c563-5b46-43f3-99a3-d30f2cb6f0f0",
       "credentials": {
         "telegramApi": {
-          "id": "bq8RKSNqy4nGIPD6",
-          "name": "Telegram account"
         }
       }
     },
@@ -434,8 +422,6 @@
       "name": "Get row(s) in sheet in Google Sheets",
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "IRhkbWMSiZBwodcP",
-          "name": "Google Sheets account"
         }
       }
     },
@@ -468,8 +454,6 @@
       "name": "Google Gemini Chat Model",
       "credentials": {
         "googlePalmApi": {
-          "id": "lADaXuGAuDLLhgQm",
-          "name": "Google Gemini(PaLM) Api account"
         }
       }
     },
@@ -492,8 +476,6 @@
       "webhookId": "d9858910-d454-4aeb-aaa4-d30c15fc61ff",
       "credentials": {
         "telegramApi": {
-          "id": "bq8RKSNqy4nGIPD6",
-          "name": "Telegram account"
         }
       }
     },
@@ -686,8 +668,6 @@
       "name": "Append row in sheet1",
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "IRhkbWMSiZBwodcP",
-          "name": "Google Sheets account"
         }
       }
     }
